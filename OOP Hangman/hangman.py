@@ -1,3 +1,4 @@
+from asyncio.proactor_events import _ProactorBaseWritePipeTransport
 import random
 
 class SecretWord:
@@ -35,7 +36,29 @@ class Game:
         self.letters = []
     
     def play_one_round(self):
-        pass
+        success = 0
+        while success == 0:
+            guess = input("What would you like to guess?")
+            if guess.isalpha() == True:
+                if len(guess) == 1 and guess.upper() not in self.letters:
+                    self.letters.append(guess.upper())
+                    self.secret_word.show_letters(self.letters)
+                    self.turns -= 1
+                    return self.secret_word.check_letters(self.letters)
+                elif len(guess) == 1:
+                    pass
+                else:
+                    self.turns -= 1
+                    return self.secret_word.word == guess.upper()
+            else:
+                print("You can't guess that try again")
 
     def play(self):
-        pass
+        while self.turns != 0:
+            if self.play_one_round() == True:
+                print("You won!")
+                return True
+
+            
+        if self.turns == 0 and self.play_one_round() == False:
+            print("You lose!")
