@@ -4,7 +4,19 @@ class Bank:
     """Creates a class instance with an empty account list"""
     def __init__(self, name):
         self.name = name
-        self.accounts = []
+        self._accounts = []
+
+
+    @property
+    def accounts(self):
+        print("getter method called")
+        return self._accounts
+
+    
+    @accounts.setter
+    def accounts(self, account):
+        print("setter method called")
+        self._accounts.append(account)
 
     def create_account(self, category, owner, interest_rate = 0):
         """Creates an account of the specified type, if the type is not in the list of possibilities
@@ -13,13 +25,13 @@ class Bank:
         if category not in ["account", "credit", "savings"]:
             raise AttributeError()
         elif category == "account":
-            self.accounts.append(Account(owner))
+            self.accounts = Account(owner)
             return self.accounts[-1]
         elif category == "credit":
-            self.accounts.append(CreditAccount(owner, interest_rate))
+            self.accounts = CreditAccount(owner, interest_rate)
             return self.accounts[-1]
         else:
-            self.accounts.append(SavingsAccount(owner, interest_rate))
+            self.accounts = SavingsAccount(owner, interest_rate)
             return self.accounts[-1]
     
     def compute_interest(self):
